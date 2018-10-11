@@ -1,0 +1,6 @@
+---
+Name: platform
+---
+SilverStripe\Control\Director:
+  rules:
+    'platform/spec': SilverStripe\Platform\Spec

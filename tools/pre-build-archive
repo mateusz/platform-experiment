@@ -1,0 +1,5 @@
+#!/bin/bash
+set -Eeuxo pipefail
+
+vendor/bin/sake platform/spec/get > spec.json
+

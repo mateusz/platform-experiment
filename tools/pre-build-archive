@@ -1,5 +1,8 @@
 #!/bin/bash
 set -Eeuxo pipefail
 
-vendor/bin/sake platform/spec/get > spec.json
+vendor/bin/sake platform/spec/get env=Production > spec-prod.json
+vendor/bin/sake platform/spec/get env=UAT > spec-uat.json
+vendor/bin/sake platform/spec/get env=Test > spec-test.json
+vendor/bin/sake platform/spec/get env=Unspecified > spec-unspecified.json
 

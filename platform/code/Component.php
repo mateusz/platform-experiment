@@ -8,6 +8,18 @@ abstract class Component
 {
     use Injectable;
 
+    protected $env;
+
+    public function setEnv($env)
+    {
+        $this->env = $env;
+    }
+
+    public function getEnv()
+    {
+        return $this->env;
+    }
+
     public abstract function getCategory();
 
     public function getName()

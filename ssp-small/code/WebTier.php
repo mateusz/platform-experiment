@@ -1,23 +1,27 @@
 <?php
 
-namespace SilverStripe\SSP\Small;
+namespace SilverStripe\SSP;
 
-use SilverStripe\Control\Director;
 use SilverStripe\Platform\Spec;
-use SilverStripe\Platform\WebTier as PlatformWebTier;
+use SilverStripe\Platform\WebTier;
 
-class WebTier extends PlatformWebTier
+class SmallWebTier extends WebTier
 {
-    public function getMin()
+    public function getGuaranteedCores()
     {
         if ($this->getEnv()===Spec::PRODUCTION) {
-            return 2;
+            return 0.8;
         } else {
-            return 1;
+            return 0.1;
         }
     }
 
-    public function getMax()
+    public function getHighlyAvailable()
+    {
+        return true;
+    }
+
+    public function getBurstCores()
     {
         if ($this->getEnv()===Spec::PRODUCTION) {
             return 4;
@@ -26,22 +30,12 @@ class WebTier extends PlatformWebTier
         }
     }
 
-    public function getCores()
-    {
-        return 1;
-    }
-
-    public function getMemGB()
+    public function getGuaranteedMemGB()
     {
         if ($this->getEnv()===Spec::PRODUCTION) {
             return 2;
         } else {
             return 1;
         }
-    }
-
-    public function getBurstable()
-    {
-        return true;
     }
 }

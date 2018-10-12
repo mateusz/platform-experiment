@@ -4,11 +4,10 @@ namespace SilverStripe\Platform;
 
 abstract class WebTier extends Component
 {
-    public abstract function getMax();
-    public abstract function getMin();
-    public abstract function getCores();
-    public abstract function getMemGB();
-    public abstract function getBurstable();
+    public abstract function getGuaranteedCores();
+    public abstract function getBurstCores();
+    public abstract function getGuaranteedMemGB();
+    public abstract function getHighlyAvailable();
 
     public function getCategory()
     {
@@ -18,11 +17,10 @@ abstract class WebTier extends Component
     public function roll()
     {
         return array_merge(parent::roll(), [
-            'min' => $this->getMin(),
-            'max' => $this->getMax(),
-            'cores' => $this->getCores(),
-            'mem' => $this->getMemGB(),
-            'burstable' => $this->getBurstable(),
+            'guaranteed_cores' => $this->getGuaranteedCores(),
+            'burst_cores' => $this->getBurstCores(),
+            'guaranteed_mem_gb' => $this->getGuaranteedMemGB(),
+            'highly_available' => $this->getHighlyAvailable(),
         ]);
     }
 }

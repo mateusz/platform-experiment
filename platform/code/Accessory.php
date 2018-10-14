@@ -2,12 +2,10 @@
 
 namespace SilverStripe\Platform;
 
-use SilverStripe\Core\Injector\Injectable;
+use JsonSerializable;
 
-abstract class Component
+abstract class Accessory implements JsonSerializable
 {
-    use Injectable;
-
     protected $env;
 
     public function setEnv($env)
@@ -20,17 +18,14 @@ abstract class Component
         return $this->env;
     }
 
-    public abstract function getCategory();
-
     public function getName()
     {
         return str_replace('\\', '_', get_class($this));
     }
 
-    public function roll()
+    public function jsonSerialize()
     {
         return [
-            'category' => $this->getCategory(),
             'name' => $this->getName(),
         ];
     }

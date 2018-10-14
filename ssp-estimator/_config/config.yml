@@ -3,7 +3,4 @@ Name: ssp-estimator
 ---
 SilverStripe\Control\Director:
   rules:
-    'platform/estimate': SilverStripe\SSP\Estimator
-SilverStripe\Platform\WebTier:
-  extensions:
-    - SilverStripe\SSP\WebTierEstimator
+    'platform/estimate': SilverStripe\SSP\Estimate

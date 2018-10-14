@@ -18,67 +18,43 @@ class Spec extends Controller
 
     const UNSPECIFIED = 'Unspecified';
 
-    private static $allowed_actions = array(
+    private static $allowed_actions = [
         'get',
-        'price',
-    );
-
-    private static $url_handlers = [
-        'get//$ComponentClass' => 'get',
-        'price' => 'price',
     ];
-
-    public function price($request)
-    {
-        $env = $this->getEnv($request);
-        $price = 0;
-
-        $classNames = ClassInfo::subclassesFor(Component::class);
-        foreach ($classNames as $cn) {
-            $rc = new ReflectionClass($cn);
-            if (!$rc->isInstantiable()) {
-                continue;
-            }
-
-            /** @var Component $s */
-            $s = $cn::singleton();
-            $s->setEnv($env);
-            $price += $s->price();
-        }
-
-        echo $price;
-    }
 
     public function get($request)
     {
-        $compClass = $request->param('ComponentClass');
+        echo json_encode($this->getAccessories($request));
+    }
+
+    /**
+     * @return [] of Accessory singletons
+     */
+    protected function getAccessories($request)
+    {
         $env = $this->getEnv($request);
 
-        if (!$compClass) {
-            $compClass = Component::class;
-        }
+        $needingAccessories = array_merge(
+            ClassInfo::implementorsOf(Accessorizes::class),
+            ClassInfo::subclassesFor(AccessorizesBase::class)
+        );
 
-        $platformClass = sprintf('SilverStripe\Platform\%s', $compClass);
-        $classNames = ClassInfo::subclassesFor($platformClass);
-        $spec = [
-            'components' => [],
-        ];
-        foreach ($classNames as $cn) {
-            $rc = new ReflectionClass($cn);
-            if (!$rc->isInstantiable()) {
+        $accessories = [];
+        foreach ($needingAccessories as $className) {
+            $cReflection = new ReflectionClass($className);
+            if (!$cReflection->isInstantiable()) {
                 continue;
             }
 
-            /** @var Component $s */
-            $s = $cn::singleton();
-            $s->setEnv($env);
-            $spec['components'] = $s->roll();
+            /** @var Accessorizes $c */
+            $c = $className::singleton();
+            $accessories = array_merge($accessories, $c->needsAccessories($env));
         }
 
-        echo json_encode($spec);
+        return $accessories;
     }
 
-    protected function getEnv(HTTPRequest $request)
+    private function getEnv(HTTPRequest $request)
     {
         $env = $request->getVar('env');
 
@@ -88,5 +64,8 @@ class Spec extends Controller
         if (!in_array($env, [self::UAT, self::PRODUCTION, self::TEST, self::UNSPECIFIED])) {
             throw new Exception(sprintf('Invalid environment: %s', $env));
         }
+
+        return $env;
     }
+
 }

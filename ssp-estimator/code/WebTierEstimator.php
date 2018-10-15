@@ -70,22 +70,22 @@ class WebTierEstimator extends Extension
         $t2MediumBurstDiff = ($t2MediumMax * 2000) - $wt->getBurstCpu();
 
         if ($t2MediumMemDiff===0 && $t2MediumCpuDiff===0 && $t2MediumBurstDiff===0) {
-            printf("Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.medium %d/%d)\n", $wt->getGuaranteedCpu() + $t2MediumCpuDiff, $wt->getBurstCpu() + $t2MediumBurstDiff, $wt->getGuaranteedMemMB() + $t2MediumMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MediumMin, $t2MediumMax);
             $b = 0.0464 * 24 * 31;
+            printf("WebTier: Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.medium %d/%d)\n", $wt->getGuaranteedCpu() + $t2MediumCpuDiff, $wt->getBurstCpu() + $t2MediumBurstDiff, $wt->getGuaranteedMemMB() + $t2MediumMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MediumMin, $t2MediumMax);
             return [$b*$t2MediumMin, $b*$t2MediumMax];
         } else if ($t2SmallMemDiff===0 && $t2SmallCpuDiff===0 && $t2SmallBurstDiff===0) {
-            printf("Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.small %d/%d)\n", $wt->getGuaranteedCpu() + $t2SmallCpuDiff, $wt->getBurstCpu() + $t2SmallBurstDiff, $wt->getGuaranteedMemMB() + $t2SmallMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2SmallMin, $t2SmallMax);
             $b = 0.0232 * 24 * 31;
+            printf("WebTier: Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.small %d/%d)\n", $wt->getGuaranteedCpu() + $t2SmallCpuDiff, $wt->getBurstCpu() + $t2SmallBurstDiff, $wt->getGuaranteedMemMB() + $t2SmallMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2SmallMin, $t2SmallMax);
             return [$b * $t2SmallMin, $b * $t2SmallMax];
         } else if ($t2MicroMemDiff===0 && $t2MicroCpuDiff===0 && $t2MicroBurstDiff===0) {
-            printf("Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.micro %d/%d)\n", $wt->getGuaranteedCpu() + $t2MicroCpuDiff, $wt->getBurstCpu() + $t2MicroBurstDiff, $wt->getGuaranteedMemMB() + $t2MicroMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MicroMin, $t2MicroMax);
             $b = 0.0116 * 24 * 31;
+            printf("Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.micro %d/%d)\n", $wt->getGuaranteedCpu() + $t2MicroCpuDiff, $wt->getBurstCpu() + $t2MicroBurstDiff, $wt->getGuaranteedMemMB() + $t2MicroMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MicroMin, $t2MicroMax);
             return [$b*$t2MicroMin, $b*$t2MicroMax];
         } else {
-            printf("Apologies, but we cannot set our infrastructure up like that. Here are some suggestions:\n");
-            printf("#1) Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.micro %d/%d)\n", $wt->getGuaranteedCpu() + $t2MicroCpuDiff, $wt->getBurstCpu() + $t2MicroBurstDiff, $wt->getGuaranteedMemMB() + $t2MicroMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MicroMin, $t2MicroMax);
-            printf("#2) Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.small %d/%d)\n", $wt->getGuaranteedCpu() + $t2SmallCpuDiff, $wt->getBurstCpu() + $t2SmallBurstDiff, $wt->getGuaranteedMemMB() + $t2SmallMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2SmallMin, $t2SmallMax);
-            printf("#3) Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.medium %d/%d)\n", $wt->getGuaranteedCpu() + $t2MediumCpuDiff, $wt->getBurstCpu() + $t2MediumBurstDiff, $wt->getGuaranteedMemMB() + $t2MediumMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MediumMin, $t2MediumMax);
+            printf("WebTier: apologies, but we cannot set our infrastructure up like that. Here are some suggestions:\n");
+            printf("  #1) Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.micro %d/%d)\n", $wt->getGuaranteedCpu() + $t2MicroCpuDiff, $wt->getBurstCpu() + $t2MicroBurstDiff, $wt->getGuaranteedMemMB() + $t2MicroMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MicroMin, $t2MicroMax);
+            printf("  #2) Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.small %d/%d)\n", $wt->getGuaranteedCpu() + $t2SmallCpuDiff, $wt->getBurstCpu() + $t2SmallBurstDiff, $wt->getGuaranteedMemMB() + $t2SmallMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2SmallMin, $t2SmallMax);
+            printf("  #3) Guaranteed CPU: %d millicores, burst CPU: %d millicores, guaranteed memory: %d MB, HA: %s (t2.medium %d/%d)\n", $wt->getGuaranteedCpu() + $t2MediumCpuDiff, $wt->getBurstCpu() + $t2MediumBurstDiff, $wt->getGuaranteedMemMB() + $t2MediumMemDiff, $wt->isHighlyAvailable() ? 'yes' : 'no', $t2MediumMin, $t2MediumMax);
             throw new Exception('None fits');
         }
 

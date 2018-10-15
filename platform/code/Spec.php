@@ -38,6 +38,7 @@ class Spec extends Controller
             ClassInfo::implementorsOf(Accessorizes::class),
             ClassInfo::subclassesFor(AccessorizesBase::class)
         );
+        $needingAccessories = array_unique($needingAccessories);
 
         $accessories = [];
         foreach ($needingAccessories as $className) {

@@ -5,19 +5,23 @@ namespace SilverStripe\SSP;
 use Exception;
 use SilverStripe\Platform\Accessory;
 use SilverStripe\Platform\Spec;
+use SilverStripe\Platform\URLRule;
 use SilverStripe\Platform\WebTier;
+use SilverStripe\Platform\Whitelist;
 
 class Estimate extends Spec
 {
     private $estimators = [
         WebTier::class => WebTierEstimator::class,
+        URLRule::class => URLRuleEstimator::class,
+        Whitelist::class => WhitelistEstimator::class,
     ];
 
     public function index($request)
     {
         $accessories = $this->getAccessories($request);
-        $min = 0;
-        $max = 0;
+        $totalMin = 0;
+        $totalMax = 0;
 
         /** @var Accessory $a */
         foreach ($accessories as $a) {
@@ -34,9 +38,12 @@ class Estimate extends Spec
                 printf("Could assemble accessories that would suit your needs. Review errors and try again.\n");
                 return;
             }
+
+            $totalMin += $min;
+            $totalMax += $max;
         }
 
-        printf("Platform price estimate: \n");
-        printf("US$ %.2f - %.2f\n", ceil($min * 1.5), ceil($max * 1.5));
+        printf("======\n");
+        printf("US$ %.2f - %.2f\n", ceil($totalMin * 1.5), ceil($totalMax * 1.5));
     }
 }
